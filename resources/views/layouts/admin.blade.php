@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="_token" content="{{ csrf_token() }}">
 
     <title>ДМ Електро</title>
     <link rel="icon" href="{{asset('backend/logo.jpg')}}" type="image/x-icon">
@@ -19,8 +19,15 @@
     <!-- Custom CSS -->
     <link href="{{asset('backend/dist/css/sb-admin-2.css')}}" rel="stylesheet">
 
+    <!-- DataTables CSS -->
+    <link href="{{asset('backend/datatables-plugins/dataTables.bootstrap.css')}}" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="{{asset('backend/datatables-responsive/dataTables.responsive.css')}}" rel="stylesheet">
+
     <!-- Custom Fonts -->
     <link href="{{asset('backend/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('backend/css/custom.css')}}" rel="stylesheet">
     <script src="{{asset('backend/jquery/jquery.min.js')}}"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -248,7 +255,7 @@
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-sign-out fa-fw"></i> Одјави се</a>
+                    <li><a href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-sign-out fa-fw"></i> Одјави се</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -377,7 +384,7 @@
         <!-- /.navbar-static-side -->
     </nav>
 
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    <form id="logout-form" action="{{ route('admin.logout') }}" method="GET" style="display: none;">
         @csrf
     </form>
     @yield('content')
@@ -395,6 +402,10 @@
     <script src="{{asset('backend/raphael/raphael.min.js')}}"></script>
     <script src="{{asset('backend/morrisjs/morris.min.js')}}"></script>
     <script src="{{asset('backend/data/morris-data.js')}}"></script>
+    <!-- DataTables JavaScript -->
+    <script src="{{asset('backend/datatables/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('backend/datatables-plugins/dataTables.bootstrap.min.js')}}"></script>
+    <script src="{{asset('backend/datatables-responsive/dataTables.responsive.js')}}"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="{{asset('backend/dist/js/sb-admin-2.js')}}"></script>

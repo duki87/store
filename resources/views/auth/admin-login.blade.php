@@ -38,7 +38,7 @@
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Пријави се') }}
                             </button>
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                            <a class="btn btn-link" href="{{ route('admin.password.request') }}">
                                 {{ __('Заборављена лозинка?') }}
                             </a>
                         </fieldset>
