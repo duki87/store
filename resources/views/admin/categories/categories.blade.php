@@ -18,6 +18,10 @@
                   </div>
                   <!-- /.panel-heading -->
                   <div class="panel-body">
+                    @if(Session::has('category_message'))
+                    <input type="hidden" id="session_message" name="" value="{{ Session::get('category_message') }}">
+                    @endif
+                      <div class="" id="category_message"></div>
                       <table width="100%" class="table table-striped table-bordered table-hover" id="categoriesTable">
                           <thead>
                               <tr>
@@ -52,6 +56,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+  session_message();
   var get_data = true;
   var categoriesDataTable = $('#categoriesTable').DataTable({
     "processing"  : true,
@@ -80,6 +85,46 @@ $(document).ready(function() {
     ],
     "pageLength"  : 10
   });
+
+  $(document).on('click', '.delete-category', function(e) {
+    e.preventDefault();
+    var category_id = $(this).attr('data-id');
+    var delete_category = new FormData();
+    delete_category.append('id', category_id);
+    if(confirm('Да ли сте сигурни да желите да обришете ову категорију?')) {
+      $.ajaxSetup({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+         }
+     });
+      $.ajax({
+         url: "remove-category",
+         type: "POST",
+         data: delete_category,
+         contentType: false,
+         cache: false,
+         processData: false,
+         success: function(result) {
+           if(result.success == 'CATEGORY_DELETE') {
+             $('#category_message').html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Успешно сте обрисали категорију <strong>'+result.name+'.</strong></div>');
+             categoriesDataTable.ajax.reload();
+           }
+         }
+       });
+    } else {
+      return false;
+    }
+  });
+
+  function session_message() {
+    var session_message = $('#session_message').val();
+    if(session_message == '' || session_message == null) {
+      return false;
+    } else {
+      $('#category_message').html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> ' + session_message);
+    }
+  }
 });
 </script>
+<script src="{{asset('backend/js/category.js')}}"></script>
 @endsection

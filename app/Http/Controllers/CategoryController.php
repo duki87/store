@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Category;
 use Illuminate\Http\Request;
 use DataTables;
+use Session;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -40,8 +45,7 @@ class CategoryController extends Controller
       }
     }
 
-    public function create_category(Request $request)
-    {
+    public function create_category(Request $request) {
       $category = new Category;
       $category->parent_id = $request->parent_id;
       $category->name = $request->name;
@@ -72,7 +76,7 @@ class CategoryController extends Controller
       ->editColumn('active', function(Category $category) {
           $id = $category->id;
           $url = $category->url;
-          return '<a href="'. route('admin.edit-category', ['url' => $url]) .'" name="edit" data-id="'.$id.'" class="btn btn-success edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="" onclick="return confirm("Да ли сте сигурни да желите да обришете ову категорију?")" name="delete_brand" id="'.$id.'" data-id="'.$id.'" class="btn btn-danger delete"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+          return '<a href="'. route('admin.edit-category', ['url' => $url]) .'" name="edit" data-id="'.$id.'" class="btn btn-success edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="" name="delete-category" id="'.$id.'" data-id="'.$id.'" class="btn btn-danger delete-category"><i class="fa fa-trash" aria-hidden="true"></i></a>';
         })
 
       ->editColumn('image', function(Category $category) {
@@ -102,7 +106,58 @@ class CategoryController extends Controller
 
     public function edit_category($url) {
       $category = Category::where(['url' => $url])->first();
-      return view('admin.categories.categories')->with('category', $category);
+      return view('admin.categories.edit-category')->with('category', $category);
+    }
+
+    public function remove_category(Request $request) {
+      $category = Category::where(['id' => $request->id])->first();
+      $name = $category->name;
+      $file_path = public_path().'/images/categories/'.$category->image;
+      unlink($file_path);
+      Category::where(['id' => $request->id])->delete();
+      return response()->json(['name'=>$name, 'success'=>'CATEGORY_DELETE']);
+    }
+
+    public function get_category_data(Request $request) {
+      $id = $request->id;
+      $parents = Category::get();
+      $parent_categories = array();
+      $category = Category::where(['id' => $id])->first();
+      foreach ($parents as $parent) {
+        if($parent->id == $category->parent_id) {
+          $option = 'selected';
+        } else {
+          $option = '';
+        }
+        $parent_categories[] = '<option value="'.$parent->id.'" '.$option.'>'.$parent->name.'</option>';
+      }
+      $full_img_path = public_path().'/images/categories/'.$category->image;
+      return response()->json([
+        'id'=>$category->id,
+        'parent_id'=>$category->parent_id,
+        'name'=>$category->name,
+        'description'=>$category->description,
+        'image'=>$category->image,
+        'url'=>$category->url,
+        'active'=>$category->active,
+        'parent_categories'=>$parent_categories,
+        'full_img_path'=>$full_img_path
+      ]);
+    }
+
+    public function update_category(Request $request) {
+      Category::where(['id' => $request->id])->update([
+        'id'=>$request->id,
+        'parent_id'=>$request->parent_id,
+        'name'=>$request->name,
+        'description'=>$request->description,
+        'image'=>$request->image,
+        'url'=>$request->url,
+        'active'=>$request->active
+      ]);
+      $public_path = url('/').'/admin/categories/';
+      Session::flash('category_message', 'Категорија '.$request->name.' је успешно измењена!');
+      return response()->json(['public_path'=>$public_path]);
     }
 
     /**
@@ -133,10 +188,6 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -145,10 +196,6 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

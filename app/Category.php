@@ -2,11 +2,16 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = [
-        'parent_id', 'name', 'description', 'image', 'url', 'active'
-    ];
+  use Notifiable;
+
+  protected $guard = 'admin';
+
+  protected $fillable = [
+      'parent_id', 'name', 'description', 'image', 'url', 'active'
+  ];
 }

@@ -42,4 +42,9 @@ Route::prefix('admin')->group(function() {
   Route::get('/get-parent-categories', 'CategoryController@get_parent_categories')->name('admin.get-parent-categories');
   Route::post('/get-categories-table', 'CategoryController@get_categories_table')->name('admin.get-categories-table');
   Route::get('/edit-category/{url}', 'CategoryController@edit_category')->name('admin.edit-category');
+  Route::post('/remove-category', 'CategoryController@remove_category')->name('admin.remove-category');
+  Route::post('/edit-category/get-category-data', 'CategoryController@get_category_data')->name('admin.get-category-data');
+  Route::post('/edit-category/remove-category-img', 'CategoryController@remove_img');
+  Route::post('/edit-category/preview-category-img', 'CategoryController@preview_category_img');
+  Route::post('/edit-category/update-category', 'CategoryController@update_category')->name('admin.update-category');
 });
