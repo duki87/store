@@ -285,22 +285,34 @@
                         <a href="#"><i class="fa fa-files-o fa-fw"></i> Категорије<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{route('admin.categories')}}">Све категорије</a>
+                                <a href="{{route('admin.categories')}}"><i class="fa fa-list" aria-hidden="true"></i> Све категорије</a>
                             </li>
                             <li>
-                                <a href="{{route('admin.add-category')}}">Додај категорију</a>
+                                <a href="{{route('admin.add-category')}}"><i class="fa fa-plus" aria-hidden="true"></i> Додај категорију</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-industry" aria-hidden="true"></i> Произвођачи<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="flot.html">Flot Charts</a>
+                                <a href="{{route('admin.brands')}}"><i class="fa fa-list" aria-hidden="true"></i> Сви произвођачи</a>
                             </li>
                             <li>
-                                <a href="morris.html">Morris.js Charts</a>
+                                <a href="{{route('admin.add-brand')}}"><i class="fa fa-plus" aria-hidden="true"></i> Додај произвођача</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i><span class="fa arrow"></span> Производи</a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{route('admin.products')}}"><i class="fa fa-list" aria-hidden="true"></i> Сви производи</a>
+                            </li>
+                            <li>
+                                <a href="{{route('admin.add-product')}}"><i class="fa fa-plus" aria-hidden="true"></i> Додај производ</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->

@@ -69,6 +69,16 @@ class CategoryController extends Controller
       return response()->json(['categories'=>$data]);
     }
 
+    public function get_child_categories(Request $request) {
+      $data = array();
+      $parent_id = $request->parent_id;
+      $categories = Category::where(['parent_id' => $parent_id])->get();
+      foreach ($categories as $category) {
+        $data[] = '<option value="'.$category->id.'">'.$category->name.'</option>';
+      }
+      return response()->json(['categories'=>$data]);
+    }
+
     public function get_categories_table() {
       $categories = Category::select('id', 'parent_id', 'name', 'image', 'url', 'active');
 

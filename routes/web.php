@@ -40,6 +40,7 @@ Route::prefix('admin')->group(function() {
   Route::post('/remove-category-img', 'CategoryController@remove_img')->name('admin.remove-category-img');
   Route::post('/create-category', 'CategoryController@create_category')->name('admin.create-category');
   Route::get('/get-parent-categories', 'CategoryController@get_parent_categories')->name('admin.get-parent-categories');
+  Route::post('/get-child-categories', 'CategoryController@get_child_categories')->name('admin.get-child-categories');
   Route::post('/get-categories-table', 'CategoryController@get_categories_table')->name('admin.get-categories-table');
   Route::get('/edit-category/{url}', 'CategoryController@edit_category')->name('admin.edit-category');
   Route::post('/remove-category', 'CategoryController@remove_category')->name('admin.remove-category');
@@ -47,4 +48,22 @@ Route::prefix('admin')->group(function() {
   Route::post('/edit-category/remove-category-img', 'CategoryController@remove_img');
   Route::post('/edit-category/preview-category-img', 'CategoryController@preview_category_img');
   Route::post('/edit-category/update-category', 'CategoryController@update_category')->name('admin.update-category');
+
+  //brands
+  Route::get('/brands', 'BrandController@index')->name('admin.brands');
+  Route::get('/add-brand', 'BrandController@add_brand')->name('admin.add-brand');
+  Route::post('/preview-brand-img', 'BrandController@preview_brand_img')->name('admin.preview-brand-img');
+  Route::post('/remove-brand-img', 'BrandController@remove_img')->name('admin.remove-brand-img');
+  Route::get('/edit-brand/{url}', 'BrandController@edit_brand')->name('admin.edit-brand');
+  Route::post('/remove-brand', 'BrandController@remove_brand')->name('admin.remove-brand');
+  Route::post('/create-brand', 'BrandController@create_brand')->name('admin.create-brand');
+  Route::post('/edit-brand/update-brand', 'BrandController@update_brand')->name('admin.update-brand');
+  Route::post('/get-brands-table', 'BrandController@get_brands_table')->name('admin.get-brands-table');
+  Route::post('/edit-brand/get-brand-data', 'BrandController@get_brand_data')->name('admin.get-brand-data');
+  Route::post('/edit-brand/remove-brand-img', 'BrandController@remove_img');
+  Route::post('/edit-brand/preview-brand-img', 'BrandController@preview_brand_img');
+
+  //products
+  Route::get('/products', 'ProductController@index')->name('admin.products');
+  Route::get('/add-product', 'ProductController@add_product')->name('admin.add-product');
 });

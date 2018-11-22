@@ -1,19 +1,19 @@
 $(document).ready(function() {
   var err = false;
   //get_parent_categories();
-  get_category_data();
+  get_brand_data();
 
-  function get_category_data() {
-    var category_id = $('#category_id').val();
+  function get_brand_data() {
+    var brand_id = $('#brand_id').val();
     var form_data = new FormData();
-    form_data.append('id', category_id);
+    form_data.append('id', brand_id);
     $.ajaxSetup({
        headers: {
           'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
        }
    });
     $.ajax({
-       url: "get-category-data",
+       url: "get-brand-data",
        type: "POST",
        data: form_data,
        dataType: 'json',
@@ -21,14 +21,7 @@ $(document).ready(function() {
        cache: false,
        processData: false,
        success: function(result) {
-         if(result.parent_id == 0) {
-           $('#isMain').attr('checked', 'checked');
-         } else {
-           $('#mainCategory').removeClass('hidden');
-           document.getElementById('parent_id').value = result.parent_id;
-         }
          $('#name').val(result.name);
-         $('#parent_id').html(result.parent_categories);
          $('#description').html(result.description);
          $('#url').val(result.url);
          $('#preview_image').attr('src', result.full_img_path);
@@ -36,16 +29,6 @@ $(document).ready(function() {
        }
      });
   }
-
-  $(document).on('change', '#isMain', function(e) {
-    e.preventDefault();
-    var checkVal = $(this).is(":checked");
-    if(checkVal === false) {
-      $('#mainCategory').removeClass('hidden');
-    } else {
-      $('#mainCategory').addClass('hidden');
-    }
-  });
 
   $(document).on('focus', '.errClass', function(e) {
     e.preventDefault();
@@ -68,14 +51,6 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on('blur', '#parent_id', function(e) {
-    e.preventDefault();
-    if($(this).val() !== '') {
-      $(this).removeClass('border-danger');
-      $('#parent_id_err').addClass('hidden');
-    }
-  });
-
   $(document).on('change', '#image', function(event) {
     event.preventDefault();
     var property = document.getElementById('image').files[0];
@@ -92,6 +67,9 @@ $(document).ready(function() {
     } else {
       var form_data = new FormData();
       var old_img = $('#remove_image').attr('data-path');
+      if(old_img !== '') {
+        remove_image(old_img);
+      }
       form_data.append('image', property);
       $.ajaxSetup({
          headers: {
@@ -99,7 +77,7 @@ $(document).ready(function() {
          }
      });
       $.ajax({
-         url: "preview-category-img",
+         url: "preview-brand-img",
          type: "POST",
          data: form_data,
          dataType: 'json',
@@ -108,9 +86,8 @@ $(document).ready(function() {
          processData: false,
          success: function(result) {
            var remove = '<button class="btn btn-danger btn-xs remove_image" id="remove_image" data-path="'+ result.image_src+'" style="position:absolute; right:20px; top:6px">x</button>';
-           $('#image_preview').html('<img src="http://localhost/store/public/images/categories/'+ result.image_src+'" class="" id="preview_image" alt="" style="position:relative;border:1px solid green; width:100%; height:auto">');
+           $('#image_preview').html('<img src="http://localhost/store/public/images/brands/'+ result.image_src+'" class="" id="preview_image" alt="" style="position:relative;border:1px solid green; width:100%; height:auto">');
            $('#image_preview').append(remove);
-           remove_image(old_img);
            console.log(result.image_src);
          }
        });
@@ -132,7 +109,7 @@ function remove_image(path_to_img) {
      }
  });
   $.ajax({
-     url: "remove-category-img",
+     url: "remove-brand-img",
      type: "POST",
      data: form_data,
      contentType: false,
@@ -146,7 +123,7 @@ function remove_image(path_to_img) {
    });
 }
 
-$(document).on('submit', '#edit-category', function(e) {
+$(document).on('submit', '#edit-brand', function(e) {
   e.preventDefault();
 
     var name = $('#name').val();
@@ -159,18 +136,6 @@ $(document).on('submit', '#edit-category', function(e) {
       active = 1;
     } else {
       active = 0;
-    }
-
-    var isMain = $('#isMain').is(":checked");
-    if(isMain === false) {
-      var parent_id = $('#parent_id').val();
-      if(parent_id == '') {
-        $('#parent_id').addClass('border-danger');
-        $('#parent_id').addClass('errClass');
-        $('#parent_id_err').removeClass('hidden');
-      }
-    } else {
-      var parent_id = 0;
     }
 
     var fields = $('.isEmpty');
@@ -199,19 +164,18 @@ $(document).on('submit', '#edit-category', function(e) {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
          }
      });
-     var category_id = $('#category_id').val();
-     var category_data = new FormData();
-     category_data.append('id', category_id);
-     category_data.append('name', name);
-     category_data.append('parent_id', parent_id);
-     category_data.append('description', description);
-     category_data.append('image', image);
-     category_data.append('url', url);
-     category_data.append('active', active);
+     var brand_id = $('#brand_id').val();
+     var brand_data = new FormData();
+     brand_data.append('id', brand_id);
+     brand_data.append('name', name);
+     brand_data.append('description', description);
+     brand_data.append('image', image);
+     brand_data.append('url', url);
+     brand_data.append('active', active);
       $.ajax({
-         url: "update-category",
+         url: "update-brand",
          type: "POST",
-         data: category_data,
+         data: brand_data,
          contentType: false,
          cache: false,
          processData: false,
@@ -227,9 +191,9 @@ $(document).on('submit', '#edit-category', function(e) {
     e.preventDefault();
     var isActive = $(this).is(":checked");
     if(isActive) {
-      $('#isActive').html('Активна категорија');
+      $('#isActive').html('Активaн произвођач');
     } else {
-      $('#isActive').html('Heaктивна категорија');
+      $('#isActive').html('Heaктивaн произвођач');
     }
   });
 

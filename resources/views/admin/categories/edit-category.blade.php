@@ -69,7 +69,7 @@
               <label for="url" class="col-sm-2 control-label">УРЛ скраћеница</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control isEmpty" name="url" id="url" value="" placeholder="УРЛ скраћеница">
-                <small class="text-danger errText hidden" id="image_err">Урл је обавезан!</small>
+                <small class="text-danger errText hidden" id="url_err">Урл је обавезан!</small>
               </div>
             </div>
 
@@ -78,14 +78,15 @@
                 <div class="checkbox">
                   <label>
                     @if($category->active == 1)
-                    <input class="isEmpty" type="checkbox" id="active" name="active" checked> Активна категорија
+                    <input class="isEmpty isActive" type="checkbox" id="active" name="active" checked> <span id="isActive">Активнa категорија</span>
                     @else
-                    <input class="isEmpty" type="checkbox" id="active" name="active"> Heaктивна категорија
+                    <input class="isEmpty isActive" type="checkbox" id="active" name="active"> <span id="isActive">Heaктивнa категорија</span>
                     @endif
                   </label>
                 </div>
               </div>
             </div>
+
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary">Измени категорију</button>
